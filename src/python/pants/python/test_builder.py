@@ -25,7 +25,6 @@ from twitter.common.python.pex import PEX
 from twitter.common.python.pex_builder import PEXBuilder
 
 from pants.base.config import Config
-from pants.base.parse_context import ParseContext
 from pants.python.python_chroot import PythonChroot
 from pants.targets.python_requirement import PythonRequirement
 from pants.targets.python_target import PythonTarget

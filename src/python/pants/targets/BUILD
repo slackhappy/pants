@@ -4,11 +4,11 @@
 python_library(
   name = 'all',
   dependencies = [
-    pants(':common'),
-    pants(':jvm'),
-    pants(':java'),
-    pants(':python'),
-    pants(':scala'),
+    ':common',
+    ':jvm',
+    ':java',
+    ':python',
+    ':scala',
   ],
 )
 
@@ -27,14 +27,14 @@ python_library(
     'with_sources.py',
   ],
   dependencies = [
-    # pants(':jvm'), XXX internal.py is in :jvm, so common won't work without it.
-    pants('src/python/pants/BUILD.commons:twitter.common.collections'),
-    pants('src/python/pants/BUILD.commons:twitter.common.lang'),
-    pants('src/python/pants/base:address'),
-    pants('src/python/pants/base:build_environment'),
-    pants('src/python/pants/base:build_manual'),
-    pants('src/python/pants/base:parse_context'),
-    pants('src/python/pants/base:target'),
+    # ':jvm', XXX internal.py is in :jvm, so common won't work without it.
+    'src/python/pants/BUILD.commons:twitter.common.collections',
+    'src/python/pants/BUILD.commons:twitter.common.lang',
+    'src/python/pants/base:address',
+    'src/python/pants/base:build_environment',
+    'src/python/pants/base:build_manual',
+    'src/python/pants/base:parse_context',
+    'src/python/pants/base:target',
   ],
 )
 
@@ -54,13 +54,13 @@ python_library(
     'jvm_target.py',
   ],
   dependencies = [
-    pants(':common'),
-    pants('src/python/pants/BUILD.commons:twitter.common.collections'),
-    pants('src/python/pants/BUILD.commons:twitter.common.dirutil'),
-    pants('src/python/pants/BUILD.commons:twitter.common.lang'),
-    pants('src/python/pants/base:build_manual'),
-    pants('src/python/pants/base:parse_context'),
-    pants('src/python/pants/base:target'),
+    ':common',
+    'src/python/pants/BUILD.commons:twitter.common.collections',
+    'src/python/pants/BUILD.commons:twitter.common.dirutil',
+    'src/python/pants/BUILD.commons:twitter.common.lang',
+    'src/python/pants/base:build_manual',
+    'src/python/pants/base:parse_context',
+    'src/python/pants/base:target',
   ],
 )
 
@@ -76,12 +76,12 @@ python_library(
     'java_thrift_library.py',
   ],
   dependencies = [
-    pants(':common'),
-    pants(':jvm'),
-    pants('src/python/pants/BUILD.commons:twitter.common.collections'),
-    pants('src/python/pants/BUILD.commons:twitter.common.lang'),
-    pants('src/python/pants/base:build_manual'),
-    pants('src/python/pants/base:target'),
+    ':common',
+    ':jvm',
+    'src/python/pants/BUILD.commons:twitter.common.collections',
+    'src/python/pants/BUILD.commons:twitter.common.lang',
+    'src/python/pants/base:build_manual',
+    'src/python/pants/base:target',
   ],
 )
 
@@ -93,11 +93,11 @@ python_library(
     'scalac_plugin.py',
   ],
   dependencies = [
-    pants(':common'),
-    pants(':jvm'),
-    pants('src/python/pants/BUILD.commons:twitter.common.collections'),
-    pants('src/python/pants/base:build_manual'),
-    pants('src/python/pants/base:target'),
+    ':common',
+    ':jvm',
+    'src/python/pants/BUILD.commons:twitter.common.collections',
+    'src/python/pants/base:build_manual',
+    'src/python/pants/base:target',
   ],
 )
 
@@ -115,14 +115,14 @@ python_library(
     'python_thrift_library.py',
   ],
   dependencies = [
-    pants('3rdparty/python:setuptools'),
-    pants(':common'),
-    pants('src/python/pants/BUILD.commons:twitter.common.collections'),
-    pants('src/python/pants/BUILD.commons:twitter.common.lang'),
-    pants('src/python/pants/BUILD.commons:twitter.common.python'),
-    pants('src/python/pants/BUILD.commons:twitter.common.quantity'),
-    pants('src/python/pants/base:build_manual'),
-    pants('src/python/pants/base:parse_context'),
-    pants('src/python/pants/base:target'),
+    '3rdparty/python:setuptools',
+    ':common',
+    'src/python/pants/BUILD.commons:twitter.common.collections',
+    'src/python/pants/BUILD.commons:twitter.common.lang',
+    'src/python/pants/BUILD.commons:twitter.common.python',
+    'src/python/pants/BUILD.commons:twitter.common.quantity',
+    'src/python/pants/base:build_manual',
+    'src/python/pants/base:parse_context',
+    'src/python/pants/base:target',
   ],
 )

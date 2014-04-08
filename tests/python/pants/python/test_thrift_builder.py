@@ -10,10 +10,10 @@ from textwrap import dedent
 from mock import MagicMock, call, mock_open, patch
 
 from pants.base.context_utils import create_config
+from pants.base.source_root import SourceRoot
 from pants.base_build_root_test import BaseBuildRootTest
 from pants.python.thrift_builder import PythonThriftBuilder
 from pants.targets.python_thrift_library import PythonThriftLibrary
-from pants.targets.sources import SourceRoot
 
 
 sample_ini_test = """

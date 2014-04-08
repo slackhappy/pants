@@ -9,8 +9,8 @@ from textwrap import dedent
 import mox
 
 from pants.base.build_environment import get_buildroot
+from pants.base.source_root import SourceRoot
 from pants.targets.python_tests import PythonTestSuite, PythonTests
-from pants.targets.sources import SourceRoot
 from pants.tasks import TaskError
 from pants.tasks.dependees import ReverseDepmap
 from pants.tasks.test_base import ConsoleTaskTest

@@ -14,9 +14,9 @@ from twitter.common.dirutil import safe_mkdir
 
 from pants.base.build_environment import get_buildroot
 from pants.base.generator import Generator, TemplateData
+from pants.base.source_root import SourceRoot
 from pants.targets.java_tests import JavaTests
 from pants.targets.scala_tests import ScalaTests
-from pants.targets.sources import SourceRoot
 from pants.tasks.ide_gen import IdeGen, Project, SourceSet
 
 

@@ -8,11 +8,11 @@ from collections import defaultdict
 
 from twitter.common.collections import OrderedSet
 
-import pants.base.build_file_context
+import pants.base.build_file_aliases
 from pants.base.build_environment import get_buildroot
 from pants.base.build_file import BuildFile
+from pants.base.source_root import SourceRoot
 from pants.base.target import Target
-from pants.targets.sources import SourceRoot
 from pants.tasks import TaskError
 from pants.tasks.console_task import ConsoleTask
 
@@ -80,11 +80,10 @@ class ReverseDepmap(ConsoleTask):
           # TODO(John Sirois): tighten up the notion of targets written down in a BUILD by a
           # user vs. targets created by pants at runtime.
           target = self.get_concrete_target(target)
-          if hasattr(target, 'dependencies'):
-            for dependencies in target.dependencies:
-              for dependency in dependencies.resolve():
-                dependency = self.get_concrete_target(dependency)
-                dependees_by_target[dependency].add(target)
+          for dependencies in target.dependencies:
+            for dependency in dependencies.resolve():
+              dependency = self.get_concrete_target(dependency)
+              dependees_by_target[dependency].add(target)
 
     roots = set(self.context.target_roots)
     if self._closed:

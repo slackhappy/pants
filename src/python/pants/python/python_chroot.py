@@ -19,7 +19,6 @@ from twitter.common.python.platforms import Platform
 
 from pants.base.build_invalidator import BuildInvalidator, CacheKeyGenerator
 from pants.base.config import Config
-from pants.base.parse_context import ParseContext
 from pants.python.antlr_builder import PythonAntlrBuilder
 from pants.python.python_setup import PythonSetup
 from pants.python.resolver import resolve_multi

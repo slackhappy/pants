@@ -5,13 +5,13 @@ python_library(
   name = 'goal',
   sources = ['__init__.py'],
   dependencies = [
-    pants(':error'),
-    pants(':context'),
-    pants(':group'),
-    pants(':phase'),
-    pants(':run_tracker'),
-    pants('src/python/pants/base:build_manual'),
-    pants('src/python/pants/tasks:task'),
+    ':error',
+    ':context',
+    ':group',
+    ':phase',
+    ':run_tracker',
+    'src/python/pants/base:build_manual',
+    'src/python/pants/tasks:task',
   ],
 )
 
@@ -19,7 +19,7 @@ python_library(
   name = 'aggregated_timings',
   sources = ['aggregated_timings.py'],
   dependencies = [
-    pants('src/python/pants/BUILD.commons:twitter.common.dirutil'),
+    'src/python/pants/BUILD.commons:twitter.common.dirutil',
   ]
 )
 
@@ -28,7 +28,7 @@ python_library(
   name = 'artifact_cache_stats',
   sources = ['artifact_cache_stats.py'],
   dependencies = [
-    pants('src/python/pants/BUILD.commons:twitter.common.dirutil'),
+    'src/python/pants/BUILD.commons:twitter.common.dirutil',
   ]
 )
 
@@ -36,17 +36,17 @@ python_library(
   name = 'context',
   sources = ['context.py'],
   dependencies = [
-    pants(':products'),
-    pants('src/python/pants/BUILD.commons:twitter.common.collections'),
-    pants('src/python/pants/BUILD.commons:twitter.common.dirutil'),
-    pants('src/python/pants/BUILD.commons:twitter.common.process'),
-    pants('src/python/pants/base:build_environment'),
-    pants('src/python/pants/base:parse_context'),
-    pants('src/python/pants/base:target'),
-    pants('src/python/pants/base:workunit'),
-    pants('src/python/pants/java:distribution'),  # XXX(fixme)
-    pants('src/python/pants/reporting'),
-    pants('src/python/pants/targets:all'),  # XXX(fixme)
+    ':products',
+    'src/python/pants/BUILD.commons:twitter.common.collections',
+    'src/python/pants/BUILD.commons:twitter.common.dirutil',
+    'src/python/pants/BUILD.commons:twitter.common.process',
+    'src/python/pants/base:build_environment',
+    'src/python/pants/base:parse_context',
+    'src/python/pants/base:target',
+    'src/python/pants/base:workunit',
+    'src/python/pants/java:distribution',  # XXX(fixme)
+    'src/python/pants/reporting',
+    'src/python/pants/targets:all',  # XXX(fixme)
   ],
 )
 
@@ -64,9 +64,9 @@ python_library(
   name = 'initialize_reporting',  # XXX shouldn't this be in reporting?!
   sources = ['initialize_reporting.py'],
   dependencies = [
-    pants('src/python/pants/BUILD.commons:twitter.common.dirutil'),
-    pants('src/python/pants/BUILD.commons:twitter.common.lang'),
-    pants('src/python/pants/reporting'),
+    'src/python/pants/BUILD.commons:twitter.common.dirutil',
+    'src/python/pants/BUILD.commons:twitter.common.lang',
+    'src/python/pants/reporting',
   ],
 )
 
@@ -74,8 +74,8 @@ python_library(
   name = 'phase',
   sources = ['phase.py'],
   dependencies = [
-    pants(':error'),
-    pants('src/python/pants/base:build_manual'),
+    ':error',
+    'src/python/pants/base:build_manual',
   ],
 )
 
@@ -83,7 +83,7 @@ python_library(
   name = 'products',
   sources = ['products.py'],
   dependencies = [
-    pants('src/python/pants/BUILD.commons:twitter.common.collections'),
+    'src/python/pants/BUILD.commons:twitter.common.collections',
   ],
 )
 
@@ -91,12 +91,12 @@ python_library(
   name = 'run_tracker',
   sources = ['run_tracker.py'],
   dependencies = [
-    pants(':aggregated_timings'),
-    pants(':artifact_cache_stats'),
-    pants('src/python/pants/base:run_info'),
-    pants('src/python/pants/base:worker_pool'),
-    pants('src/python/pants/base:workunit'),
-    pants('src/python/pants/reporting'),
-    pants('src/python/pants/base:config'),
+    ':aggregated_timings',
+    ':artifact_cache_stats',
+    'src/python/pants/base:run_info',
+    'src/python/pants/base:worker_pool',
+    'src/python/pants/base:workunit',
+    'src/python/pants/reporting',
+    'src/python/pants/base:config',
   ],
 )

@@ -7,7 +7,6 @@ from __future__ import (nested_scopes, generators, division, absolute_import, wi
 from twitter.common.collections import OrderedSet
 
 from pants.base.build_manual import manual
-from pants.targets.pants_target import Pants
 from pants.targets.python_target import PythonTarget
 
 

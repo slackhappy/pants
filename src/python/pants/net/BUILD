@@ -5,9 +5,9 @@ python_library(
   name = 'net',
   sources = rglobs('*.py'),
   dependencies = [
-    pants('src/python/pants/BUILD.commons:twitter.common.dirutil'),
-    pants('src/python/pants/BUILD.commons:twitter.common.lang'),
-    pants('src/python/pants/BUILD.commons:twitter.common.quantity'),
-    pants('3rdparty/python:requests'),
+    'src/python/pants/BUILD.commons:twitter.common.dirutil',
+    'src/python/pants/BUILD.commons:twitter.common.lang',
+    'src/python/pants/BUILD.commons:twitter.common.quantity',
+    '3rdparty/python:requests',
   ],
 )

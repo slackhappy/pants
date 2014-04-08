@@ -12,8 +12,8 @@ from twitter.common.dirutil import safe_mkdir, safe_open, safe_rmtree
 
 from pants.base.address import Address
 from pants.base.build_root import BuildRoot
+from pants.base.source_root import SourceRoot
 from pants.base.target import Target
-from pants.targets.sources import SourceRoot
 
 
 class BaseBuildRootTest(unittest.TestCase):

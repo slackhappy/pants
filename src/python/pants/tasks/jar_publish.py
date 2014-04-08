@@ -25,7 +25,6 @@ from pants.base.generator import Generator, TemplateData
 from pants.base.target import Target
 from pants.ivy.bootstrapper import Bootstrapper
 from pants.ivy.ivy import Ivy
-from pants.targets.internal import InternalTarget
 from pants.targets.resources import Resources
 from pants.tasks import Task, TaskError
 from pants.tasks.scm_publish import ScmPublish, Semver
@@ -696,7 +695,7 @@ class JarPublish(ScmPublish, Task):
       return tgt in candidates and tgt.is_exported
 
     return OrderedSet(filter(exportable,
-                             reversed(InternalTarget.sort_targets(filter(exportable, candidates)))))
+                             reversed(sort_targets(filter(exportable, candidates)))))
 
   def fingerprint(self, target, fingerprint_internal):
     sha = hashlib.sha1()
