@@ -30,6 +30,9 @@ class ZincAnalysisElement(object):
     # Subclasses can alias the elements of self.args in their own __init__, for convenience.
     self.args = args
 
+  def diff(self, other):
+    return ZincAnalysisElementDiff(self, other)
+
   def __eq__(self, other):
     return self.args == other.args
 
@@ -191,7 +194,7 @@ class ZincAnalysis(Analysis):
              self.compilations, self.compile_setup),
             (other.relations, other.stamps, other.apis, other.source_infos,
              other.compilations, other.compile_setup)):
-      element_diff = ZincAnalysisElementDiff(self_elem, other_elem)
+      element_diff = self_elem.diff(other_elem)
       if element_diff.is_different():
         element_diffs.append(element_diff)
     return element_diffs
@@ -373,6 +376,10 @@ class Stamps(ZincAnalysisElement):
   def __init__(self, args):
     super(Stamps, self).__init__(args)
     (self.products, self.sources, self.binaries, self.classnames) = self.args
+
+  def diff(self, other):
+    # Override diff implementation due to idiosyncracies of stamps.
+    return ZincAnalysisElementDiff(self, other, ('class names', ))
 
 
 class APIs(ZincAnalysisElement):

@@ -14,18 +14,19 @@ class DictDiff(object):
 
   Useful in tests.
   """
-  def __init__(self, left_dict, right_dict):
+  def __init__(self, left_dict, right_dict, keys_only=False):
     left_keys = set(left_dict.keys())
     right_keys = set(right_dict.keys())
     self._left_missing_keys = left_keys - right_keys
     self._right_missing_keys = right_keys - left_keys
     self._diff_keys = {}  # Map of key -> (left value, right value)
-    shared_keys = left_keys & right_keys
-    for key in shared_keys:
-      left_value = left_dict[key]
-      right_value = right_dict[key]
-      if left_value != right_value:
-        self._diff_keys[key] = (left_value, right_value)
+    if not keys_only:
+      shared_keys = left_keys & right_keys
+      for key in shared_keys:
+        left_value = left_dict[key]
+        right_value = right_dict[key]
+        if left_value != right_value:
+          self._diff_keys[key] = (left_value, right_value)
 
   def is_different(self):
     return self._left_missing_keys or self._right_missing_keys or self._diff_keys
@@ -48,14 +49,15 @@ class DictDiff(object):
 
 
 class ZincAnalysisElementDiff(object):
-  def __init__(self, left_elem, right_elem):
+  def __init__(self, left_elem, right_elem, keys_only_headers=None):
     left_type = type(left_elem)
     right_type = type(right_elem)
     if left_type != right_type:
       raise Exception('Cannot compare elements of types %s and %s' % (left_type, right_type))
     self._arg_diffs = OrderedDict()
     for header, left_dict, right_dict in zip(left_elem.headers, left_elem.args, right_elem.args):
-      self._arg_diffs[header] = DictDiff(left_dict, right_dict)
+      keys_only = header in (keys_only_headers or [])
+      self._arg_diffs[header] = DictDiff(left_dict, right_dict, keys_only=keys_only)
 
   def is_different(self):
     return any([x.is_different() for x in self._arg_diffs.values()])
