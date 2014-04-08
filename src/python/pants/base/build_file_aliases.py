@@ -28,7 +28,7 @@ from pants.targets.python_egg import PythonEgg
 from pants.targets.python_library import PythonLibrary
 from pants.targets.python_requirement import PythonRequirement
 from pants.targets.python_requirement_library import PythonRequirementLibrary
-# from pants.targets.python_requirements import python_requirements
+from pants.targets.python_requirements import python_requirements
 from pants.targets.python_tests import PythonTestSuite, PythonTests
 from pants.targets.python_thrift_library import PythonThriftLibrary
 from pants.targets.repository import Repository
@@ -135,14 +135,35 @@ def maven_layout(basedir='', rel_path=None):
   root('src/test/scala', JavaTests, Page, ScalaLibrary, ScalaTests)
 
 
+class FilesetRelPathWrapper(object):
+  def __init__(self, rel_path):
+    self.rel_path = rel_path
+
+  def __call__(self, *args, **kwargs):
+    return self.wrapped_fn(root=self.rel_path, *args, **kwargs)
+
+
+class Globs(FilesetRelPathWrapper):
+  wrapped_fn = Fileset.globs
+
+
+class RGlobs(FilesetRelPathWrapper):
+  wrapped_fn = Fileset.rglobs
+
+
+class ZGlobs(FilesetRelPathWrapper):
+  wrapped_fn = Fileset.zglobs
+
+
 applicative_path_relative_util_aliases = {
   'source_root': SourceRoot,
   'bundle': Bundle,
+  'globs': Globs,
+  'rglobs': RGlobs,
+  'zglobs': ZGlobs,
 }
 
 partial_path_relative_util_aliases = {
-  'globs': Fileset.globs,
-  'rglobs': Fileset.rglobs,
-  'zglobs': Fileset.zglobs,
   'maven_layout': maven_layout,
+  'python_requirements': python_requirements,
 }

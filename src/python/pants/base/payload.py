@@ -70,7 +70,7 @@ class BundlePayload(Payload):
       hasher.update(bundle_hash)
 
 
-class JvmTargetPayload(Payload, SourcesMixin):
+class JvmTargetPayload(SourcesMixin, Payload):
   def __init__(self,
                sources_rel_path=None,
                sources=None,
@@ -132,5 +132,5 @@ class JarLibraryPayload(Payload):
     return False
 
   def invalidation_hash(self, hasher):
-    hasher.update(str(hash(self.jars)))
-    hasher.update(str(hash(self.overrides)))
+    hasher.update(str(hash(tuple(self.jars))))
+    hasher.update(str(hash(tuple(self.overrides))))

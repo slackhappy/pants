@@ -6,11 +6,10 @@ from __future__ import (nested_scopes, generators, division, absolute_import, wi
 
 import os
 
-from pants.base.parse_context import ParseContext
 from pants.targets.python_requirement import PythonRequirement
 
 
-def python_requirements(requirements_relpath='requirements.txt'):
+def python_requirements(rel_path=None, requirements_relpath='requirements.txt'):
   """Translates a pip requirements file into an equivalent set of PythonRequirement targets.
 
   NB that there are some requirements files that can't be unambiguously translated; ie: multiple
@@ -27,8 +26,7 @@ def python_requirements(requirements_relpath='requirements.txt'):
   requirements = []
   repository = None
 
-  build_file = ParseContext.locate().current_buildfile
-  requirements_path = os.path.join(build_file.parent_path, requirements_relpath)
+  requirements_path = os.path.join(rel_path, requirements_relpath)
   with open(requirements_path) as fp:
     for line in fp:
       line = line.strip()
