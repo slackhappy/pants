@@ -283,22 +283,23 @@ class ZincAnalysis(Analysis):
 
     # Split apis.
 
-    # The splits, but expressed via class representatives of the sources (see above).
-    representative_splits = [filter(None, [representatives.get(s) for s in srcs]) for srcs in splits]
+    # Externalized deps must copy the target's formerly internal API.
     representative_to_internal_api = {}
     for src, rep in representatives.items():
       representative_to_internal_api[rep] = self.apis.internal.get(src)
 
-    # Note that the keys in self.apis.external are classes, not sources.
     internal_api_splits = self._split_dict(self.apis.internal, splits)
-    external_api_splits = self._split_dict(self.apis.external, representative_splits)
 
-    # All externalized deps require a copy of the relevant api.
-    for external, external_api in zip(external_splits, external_api_splits):
+    external_api_splits = []
+    for external in external_splits:
+      external_api = {}
       for vs in external.values():
         for v in vs:
-          if v in representative_to_internal_api:
+          if v in representative_to_internal_api:  # This is an externalized dep.
             external_api[v] = representative_to_internal_api[v]
+          else: # This is a dep that was already external.
+            external_api[v] = self.apis.external[v]
+      external_api_splits.append(external_api)
 
     apis_splits = []
     for args in zip(internal_api_splits, external_api_splits):
@@ -379,7 +380,7 @@ class Stamps(ZincAnalysisElement):
 
   def diff(self, other):
     # Override diff implementation due to idiosyncracies of stamps.
-    return ZincAnalysisElementDiff(self, other, ('class names', ))
+    return ZincAnalysisElementDiff(self, other, keys_only_headers=('class names', ))
 
 
 class APIs(ZincAnalysisElement):

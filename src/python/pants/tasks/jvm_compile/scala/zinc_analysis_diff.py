@@ -17,8 +17,8 @@ class DictDiff(object):
   def __init__(self, left_dict, right_dict, keys_only=False):
     left_keys = set(left_dict.keys())
     right_keys = set(right_dict.keys())
-    self._left_missing_keys = left_keys - right_keys
-    self._right_missing_keys = right_keys - left_keys
+    self._left_missing_keys = right_keys - left_keys
+    self._right_missing_keys = left_keys - right_keys
     self._diff_keys = {}  # Map of key -> (left value, right value)
     if not keys_only:
       shared_keys = left_keys & right_keys

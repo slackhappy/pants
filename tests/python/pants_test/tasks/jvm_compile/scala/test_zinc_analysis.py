@@ -28,28 +28,28 @@ class ZincAnalysisTest(unittest.TestCase):
   def test_analysis_files(self):
     # Read in a bunch of analysis files.
     analysis_dir = os.path.join(os.path.dirname(__file__), 'analysis')
-    analysis_files = [f for f in os.listdir(analysis_dir) if f.endswith('.analysis')]
+    analysis_files = [os.path.join(analysis_dir, f) \
+                      for f in os.listdir(analysis_dir) if f.endswith('.analysis')]
     num_analyses = len(analysis_files)
     parser = ZincAnalysisParser('/Users/benjy/src/foursquare.web/.pants.d/scalac/classes/')
 
     def parse(f):
-      inpath = os.path.join(analysis_dir, f)
-      print('Parsing: %s' % inpath)
-      return parser.parse_from_path(inpath)
+      print('Parsing: %s' % f)
+      return parser.parse_from_path(f)
 
     analyses = self._time(lambda: [parse(f) for f in analysis_files],
                           'Parsed %d files' % num_analyses)
 
     # Write them back out individually.
     with temporary_dir() as tmpdir:
-      def write(f, analysis):
-        outpath = os.path.join(tmpdir, f)
+      def write(file_name, analysis):
+        outpath = os.path.join(tmpdir, file_name)
         print('Writing: %s' % outpath)
         analysis.write_to_path(outpath)
 
       def _write_all():
-        for f, analysis in zip(analysis_files, analyses):
-          write(f, analysis)
+        for analysis_file, analysis in zip(analysis_files, analyses):
+          write(os.path.basename(analysis_file), analysis)
 
       self._time(_write_all, 'Wrote %d files' % num_analyses)
 
@@ -77,9 +77,14 @@ class ZincAnalysisTest(unittest.TestCase):
     # We expect an empty catchall.
     self.assertEquals(0, len(catchall_analysis.stamps.sources))
 
-    for expected_analysis, split_analysis in zip (analyses, split_analyses):
-      diffs = expected_analysis.diff(split_analysis)
-      self.assertEquals(expected_analysis, split_analysis, ''.join([unicode(d) for d in diffs]))
+    for analysis_file, analysis, split_analysis in zip(analysis_files, analyses, split_analyses):
+      # Write out the split we're diffing, so that it's easy to look at when the test fails.
+      # (just switch to cleanup=False).
+      with temporary_file_path(cleanup=False) as outfile_path:
+        split_analysis.write_to_path(outfile_path)
+      print('Diffing %s and %s' % (analysis_file, outfile_path))
+      diffs = analysis.diff(split_analysis)
+      self.assertEquals(analysis, split_analysis, ''.join([unicode(d) for d in diffs]))
 
     print('Total time: %f seconds' % self.total_time)
 
