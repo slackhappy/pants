@@ -4,7 +4,7 @@
 dependencies(
   name = 'pants',
   dependencies = [
-    'src/python/pants/bin:pants',
+    pants('src/python/pants/bin:pants'),
   ],
 ).with_description('An alias for the pants binary target.')
 
@@ -16,10 +16,10 @@ python_library(
     name='pants',
     version='0.0.17',
     description="Twitter's pants build tool.",
-    url='https://github.com/twitter/commons',
+    url='https://github.com/pantsbuild/pants',
     license='Apache License, Version 2.0',
     zip_safe=True,
-    namespace_packages=['twitter'],
+    namespace_packages=['pants'],
     classifiers=[
       'Intended Audience :: Developers',
       'License :: OSI Approved :: Apache Software License',
@@ -28,8 +28,8 @@ python_library(
     ]
   ).with_binaries(
     # TODO(John Sirois): Switch back when target cycles have been sorted out.
-    # pants='src/python/pants/bin:pants',
-    pants=':_pants_transitional_publishable_binary_',
+    # pants=pants('src/python/pants/bin:pants'),
+    pants=pants(':_pants_transitional_publishable_binary_'),
   )
 )
 
@@ -42,12 +42,12 @@ python_library(
   name = 'binary_util',
   sources = ['binary_util.py'],
   dependencies = [
-    'src/python/pants/BUILD.commons:twitter.common.contextutil',
-    'src/python/pants/BUILD.commons:twitter.common.dirutil',
-    'src/python/pants/BUILD.commons:twitter.common.lang',
-    'src/python/pants/BUILD.commons:twitter.common.log',
-    'src/python/pants/base:config',
-    'src/python/pants/tasks:task_error',
+    pants('3rdparty/python/twitter/commons:twitter.common.contextutil'),
+    pants('3rdparty/python/twitter/commons:twitter.common.dirutil'),
+    pants('3rdparty/python/twitter/commons:twitter.common.lang'),
+    pants('3rdparty/python/twitter/commons:twitter.common.log'),
+    pants('src/python/pants/base:config'),
+    pants('src/python/pants/tasks:task_error'),
   ],
 )
 
@@ -55,6 +55,6 @@ python_library(
   name = 'thrift_util',
   sources = ['thrift_util.py'],
   dependencies = [
-    ':binary_util',
+    pants(':binary_util'),
   ],
 )

@@ -4,7 +4,7 @@
 python_library(
   name = 'all',
   dependencies = [
-    ':git',
+    pants(':git'),
   ]
 )
 
@@ -12,7 +12,7 @@ python_library(
   name = 'scm',
   sources = ['__init__.py'],
   dependencies = [
-    'src/python/pants/BUILD.commons:twitter.common.lang',
+    pants('3rdparty/python/twitter/commons:twitter.common.lang'),
   ],
 )
 
@@ -20,7 +20,7 @@ python_library(
   name = 'git',
   sources = ['git.py'],
   dependencies = [
-    ':scm',
-    'src/python/pants/BUILD.commons:twitter.common.log',
+    pants(':scm'),
+    pants('3rdparty/python/twitter/commons:twitter.common.log'),
   ],
 )

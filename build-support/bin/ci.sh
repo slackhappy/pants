@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Required on OS X.
+export set ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
+
 function banner() {
   echo
   echo "[== $@ ==]"
@@ -51,7 +54,7 @@ if [[ "${skip_bootstrap:-false}" == "false" ]]; then
   banner "Bootstrapping pants"
   (
     ./build-support/python/clean.sh && \
-    PANTS_VERBOSE=1 PEX_VERBOSE=1 PYTHON_VERBOSE=1 ./pants.bootstrap;
+    PANTS_VERBOSE=1 PEX_VERBOSE=1 PYTHON_VERBOSE=1 ./pants;
     ./pants.pex goal goals
   ) || die "Failed to bootstrap pants."
 fi
@@ -73,16 +76,14 @@ fi
 if [[ "${skip_java:-false}" == "false" ]]; then
   banner "Running jvm tests"
   (
-    ./pants.pex goal test {src,tests}/java/com/twitter/common:: $daemons -x && \
-    ./pants.pex goal test {src,tests}/scala/com/twitter/common:: $daemons -x
+    ./pants.pex goal test {src,tests}/{java,scala}:: $daemons -x
   ) || die "Jvm test failure."
 fi
 
 if [[ "${skip_python:-false}" == "false" ]]; then
   banner "Running python tests"
   (
-    PANTS_PYTHON_TEST_FAILSOFT=1 ./pants.pex build --timeout=5 tests/python/twitter/common:all && \
-    PANTS_PYTHON_TEST_FAILSOFT=1 ./pants.pex build --timeout=5 tests/python/pants:all
+    PANTS_PYTHON_TEST_FAILSOFT=1 ./pants.pex build --timeout=5 tests/python/pants_test:all
   ) || die "Python test failure"
 fi
 

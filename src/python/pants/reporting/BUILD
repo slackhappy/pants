@@ -6,14 +6,14 @@ python_library(
   sources = globs('*.py'),
   resources = rglobs('assets/*') + globs('templates/*.mustache'),
   dependencies = [
-    'src/python/pants/BUILD.commons:twitter.common.dirutil',
-    'src/python/pants/BUILD.commons:twitter.common.threading',
-    'src/python/pants/base:build_environment',
-    'src/python/pants/base:build_file',
-    'src/python/pants/base:mustache',
-    'src/python/pants/base:workunit',
-    'src/python/pants/goal:run_tracker',  # XXX
-    '3rdparty/python:ansicolors',
-    '3rdparty/python:pystache',
+    pants('3rdparty/python/twitter/commons:twitter.common.dirutil'),
+    pants('3rdparty/python/twitter/commons:twitter.common.threading'),
+    pants('src/python/pants/base:build_environment'),
+    pants('src/python/pants/base:build_file'),
+    pants('src/python/pants/base:mustache'),
+    pants('src/python/pants/base:workunit'),
+    pants('src/python/pants/goal:run_tracker'),  # XXX
+    pants('3rdparty/python:ansicolors'),
+    pants('3rdparty/python:pystache'),
   ]
 )

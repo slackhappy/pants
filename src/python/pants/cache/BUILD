@@ -5,8 +5,8 @@ python_library(
   name = 'cache',
   sources = globs('*.py'),
   dependencies = [
-    'src/python/pants/BUILD.commons:twitter.common.contextutil',
-    'src/python/pants/BUILD.commons:twitter.common.dirutil',
-    'src/python/pants/BUILD.commons:twitter.common.quantity',
+    pants('3rdparty/python/twitter/commons:twitter.common.contextutil'),
+    pants('3rdparty/python/twitter/commons:twitter.common.dirutil'),
+    pants('3rdparty/python/twitter/commons:twitter.common.quantity'),
   ]
 )
