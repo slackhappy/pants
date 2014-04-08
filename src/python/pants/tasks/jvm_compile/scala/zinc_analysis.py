@@ -11,6 +11,7 @@ from collections import defaultdict
 
 from pants.base.build_environment import get_buildroot
 from pants.tasks.jvm_compile.analysis import Analysis
+from pants.tasks.jvm_compile.scala.zinc_analysis_diff import ZincAnalysisElementDiff
 
 
 class ZincAnalysisElement(object):
@@ -28,6 +29,15 @@ class ZincAnalysisElement(object):
   def __init__(self, args):
     # Subclasses can alias the elements of self.args in their own __init__, for convenience.
     self.args = args
+
+  def __eq__(self, other):
+    return self.args == other.args
+
+  def __ne__(self, other):
+    return not self.__eq__(other)
+
+  def __hash__(self):
+    return hash(self.args)
 
   def write(self, outfile, inline_vals=True, rebasings=None):
     self._write_multiple_sections(outfile, self.headers, self.args, inline_vals, rebasings)
@@ -173,7 +183,33 @@ class ZincAnalysis(Analysis):
     (self.relations, self.stamps, self.apis, self.source_infos, self.compilations, self.compile_setup) = \
       (relations, stamps, apis, source_infos, compilations, compile_setup)
 
-  # Impelementation of methods required by Analysis.
+  def diff(self, other):
+    """Returns a list of element diffs, one per element where self and other differ."""
+    element_diffs = []
+    for self_elem, other_elem in zip(
+            (self.relations, self.stamps, self.apis, self.source_infos,
+             self.compilations, self.compile_setup),
+            (other.relations, other.stamps, other.apis, other.source_infos,
+             other.compilations, other.compile_setup)):
+      element_diff = ZincAnalysisElementDiff(self_elem, other_elem)
+      if element_diff.is_different():
+        element_diffs.append(element_diff)
+    return element_diffs
+
+  def __eq__(self, other):
+    return (self.relations, self.stamps, self.apis, self.source_infos,
+            self.compilations, self.compile_setup) == \
+           (other.relations, other.stamps, other.apis, other.source_infos,
+            other.compilations, other.compile_setup)
+
+  def __ne__(self, other):
+    return not self.__eq__(other)
+
+  def __hash__(self):
+    return hash((self.relations, self.stamps, self.apis, self.source_infos,
+                 self.compilations, self.compile_setup))
+
+  # Implementation of methods required by Analysis.
 
   def split(self, splits, catchall=False):
     # Note: correctly handles "externalizing" internal deps that must be external post-split.
@@ -361,6 +397,9 @@ class Compilations(ZincAnalysisElement):
   def __init__(self, args):
     super(Compilations, self).__init__(args)
     (self.compilations, ) = self.args
+    # Compilations aren't useful and can accumulate to be huge and drag down parse times.
+    # We clear them here to prevent them propagating through splits/merges.
+    self.compilations.clear()
 
 
 class CompileSetup(ZincAnalysisElement):

@@ -77,29 +77,9 @@ class ZincAnalysisTest(unittest.TestCase):
     # We expect an empty catchall.
     self.assertEquals(0, len(catchall_analysis.stamps.sources))
 
-    # Write the splits back out to files, so we can diff them with the original files.
-    with temporary_dir(cleanup=False) as tmpdir:
-      roundtripped_analysis_files = []
-      def write(i, analysis):
-        outpath = os.path.join(tmpdir, 'analysis.%d' % i)
-        roundtripped_analysis_files.append(outpath)
-        print('Writing: %s' % outpath)
-        analysis.write_to_path(outpath)
-
-      def _write_all():
-        for i, analysis in enumerate(split_analyses[0:-1]):
-          write(i, analysis)
-      self._time(_write_all, 'Wrote %d files' % num_analyses)
-
-      for orig_analysis_file, roundtripped_analysis_file in \
-          zip(analysis_files, roundtripped_analysis_files):
-        orig_analysis_path = os.path.join(analysis_dir, orig_analysis_file)
-        with open(orig_analysis_path, 'r') as infile1:
-          orig_analysis_content = infile1.read()
-        with open(roundtripped_analysis_file, 'r') as infile2:
-          roundtripped_analysis_content = infile2.read()
-        #print('Diffing %s and %s' % (orig_analysis_path, roundtripped_analysis_file))
-        #self.assertEqual(orig_analysis_content, roundtripped_analysis_content)
+    for expected_analysis, split_analysis in zip (analyses, split_analyses):
+      diffs = expected_analysis.diff(split_analysis)
+      self.assertEquals(expected_analysis, split_analysis, ''.join([unicode(d) for d in diffs]))
 
     print('Total time: %f seconds' % self.total_time)
 
