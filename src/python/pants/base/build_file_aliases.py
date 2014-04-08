@@ -92,6 +92,7 @@ object_aliases = {
   'get_scm': get_scm,
   'set_scm': set_scm,
   'jar': JarDependency,
+  'pants': lambda x: x,
   'python_requirement': PythonRequirement,
   'exclude': Exclude,
   'python_artifact': PythonArtifact,
